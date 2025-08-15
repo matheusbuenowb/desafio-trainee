@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  challenge_db:
+    image: postgres:15
+    container_name: challenge_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+
+  challenge_web:
+    build: .
+    container_name: challenge_web
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./app:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      challenge_db:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  challenge_n8n:
+    image: n8nio/n8n:latest
+    container_name: challenge_n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    env_file:
+      - .env
+
+volumes:
+  db_data:
+  n8n_data:
