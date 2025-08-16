@@ -28,3 +28,20 @@ def lead_form(request):
         form = LeadForm()
 
     return render(request, "leads/lead_form.html", {"form": form}) #retorna o request e o form
+
+'''
+def lead_form(request):
+    if request.method == "POST":
+        form = LeadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success')  # redireciona para página de sucesso
+    else:
+        form = LeadForm()
+
+    return render(request, 'leads/lead_form.html', {'form': form})
+'''
+def success(request):
+    return render(request, 'leads/success.html')
+
+
