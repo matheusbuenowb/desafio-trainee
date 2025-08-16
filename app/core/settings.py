@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "challenge_db"),
-        "USER": os.getenv("POSTGRES_USER", "challenge_user"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "challenge_pass"),
-        "HOST": os.getenv("POSTGRES_HOST", "challenge_db"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": "challenge_db",  # nome do container do Postgres no docker-compose
+        "PORT": "5432",
     }
 }
 
