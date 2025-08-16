@@ -24,6 +24,11 @@
         <button type="submit">Enviar</button>
     </form>
 
+    {% if error %}
+    <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+
     <img src="{% static 'img/logo.png' %}" alt="Logo" width="120">
 </body>
 </html>
