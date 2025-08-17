@@ -21,7 +21,7 @@ services:
     volumes:
       - ./app:/app
     ports:
-      - "8000:8000"
+      - "8080:8000"
     depends_on:
       challenge_db:
         condition: service_healthy
@@ -37,6 +37,14 @@ services:
       - n8n_data:/home/node/.n8n
     env_file:
       - .env
+
+  challenge_app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - challenge_db
 
 volumes:
   db_data:
