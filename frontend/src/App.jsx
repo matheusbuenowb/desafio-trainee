@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Leads from "./pages/Leads";
+import NewLead from "./pages/NewLead";
 
 function App() {
   return (
