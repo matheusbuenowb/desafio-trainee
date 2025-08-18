@@ -1,0 +1,16 @@
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+input[type="text"], input[type="email"] {
+  padding: 8px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

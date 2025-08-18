@@ -23,9 +23,9 @@ function App() {
         {/* Main content */}
         <main className="main-content">
           <Routes>
-            <Route path="/dashboard" element={<h2>Dashboard</h2>} />
-            <Route path="/leads" element={<h2>Lista de Leads</h2>} />
-            <Route path="/new-lead" element={<h2>Cadastro de Lead</h2>} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/leads" element={<Leads />} />
+            <Route path="/new-lead" element={<NewLead />} />
           </Routes>
         </main>
       </div>
