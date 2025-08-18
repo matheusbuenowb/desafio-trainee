@@ -4,13 +4,17 @@ import Dashboard from "./pages/Dashboard";
 import Leads from "./pages/Leads";
 import NewLead from "./pages/NewLead";
 
+import "./styles/main.css";
+import "./styles/sidebar.css";
+import "./styles/pages.css";
+
 function App() {
   return (
     <Router>
       <div className="app-container">
         {/* Sidebar */}
         <aside className="sidebar">
-          <h1 className="logo">Trainee CRM</h1>
+          <h1 className="logo">CRM</h1>
           <nav>
             <ul>
               <li><Link to="/dashboard">Dashboard</Link></li>
