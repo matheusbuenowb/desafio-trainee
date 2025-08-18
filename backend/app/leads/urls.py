@@ -6,4 +6,5 @@ from . import views
 urlpatterns = [
     path('', views.lead_form, name='lead_form'),
     path('success/', views.success, name='success'),
+    path("api/leads/", views.create_lead, name="create_lead"),
 ]

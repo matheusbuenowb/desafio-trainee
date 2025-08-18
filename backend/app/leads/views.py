@@ -5,6 +5,10 @@ from django.contrib import messages
 from django.db import IntegrityError
 from .forms import LeadForm
 from .models import Lead
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+import json
 
 def lead_form(request):
     error = None
@@ -39,4 +43,15 @@ def lead_form(request):
 def success(request):
     return render(request, 'leads/success.html')
 
-
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_lead(request):
+    try:
+        data = json.loads(request.body)
+        lead = Lead.objects.create(
+            name=data.get("name"),
+            email=data.get("email")
+        )
+        return JsonResponse({"message": "Lead criado!", "id": lead.id})
+    except Exception as e:
+        return JsonResponse({"message": "Erro ao criar lead", "error": str(e)}, status=400)
