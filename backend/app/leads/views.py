@@ -50,14 +50,33 @@ def success(request):
     return render(request, 'leads/success.html')
 
 
-@api_view(['POST'])
+@api_view(['POST'])  #metodo para lidar com as req POST do front react
 def create_lead(request):
     print(request.data)  # log do que chega do frontend
     serializer = LeadSerializer(data=request.data)
     if serializer.is_valid():
         lead = serializer.save() #aqui o objeto Lead é recém-criado
+        notify_n8n(lead) #aqui já chama o notify n8n para mandar o webhook
         return Response({"message": "Lead criado!", "id": lead.id})
     return Response({"message": "Erro ao criar lead", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def notify_n8n(lead): #metodo exclusivo para enviar o webhook ao n8n, chamado em create_lead
+    n8n_webhook = os.getenv("N8N_WEBHOOK_URL")  # colocar no .env
+    if n8n_webhook:
+        payload = {
+            "first_name": lead.first_name,
+            "last_name": lead.last_name,
+            "email": lead.email,
+            "message": lead.message,
+            "created_at": lead.created_at.isoformat()
+        }
+        try:
+            response = requests.post(n8n_webhook, json=payload)
+            if response.status_code != 200:
+                print(f"Webhook n8n retornou {response.status_code}: {response.text}")
+        except Exception as e:
+            print("Erro ao enviar webhook para n8n:", e)
 
 
 class LeadViewSet(viewsets.ModelViewSet):

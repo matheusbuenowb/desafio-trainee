@@ -4,18 +4,19 @@ export default function NewLead() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [feedback, setFeedback] = useState("");
+  const [message, setMessage] = useState(""); // mensagem do lead
+  const [statusMessage, setStatusMessage] = useState(""); // feedback
+  const [status, setStatus] = useState(""); // sucesso ou erro
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus(""); 
+    setStatusMessage("");
 
     try {
       const response = await fetch("http://localhost:8080/api/leads/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
@@ -27,25 +28,29 @@ export default function NewLead() {
       const data = await response.json();
 
       if (response.ok) {
-        setFeedback(data.message);
+        setStatus("success");
+        setStatusMessage("Lead criado com sucesso!");
+        // limpa formulário
         setFirstName("");
         setLastName("");
         setEmail("");
         setMessage("");
       } else {
-        setFeedback(`Erro: ${JSON.stringify(data.errors)}`);
+        setStatus("error");
+        setStatusMessage(`Erro: ${data.error || "Não foi possível criar lead"}`);
       }
     } catch (err) {
-      setFeedback("Erro ao criar lead");
+      setStatus("error");
+      setStatusMessage("Erro ao conectar com o servidor!");
     }
   };
 
   return (
-    <div>
-      <h2>Cadastro de Lead</h2>
+    <div className="new-lead-container">
+      <h2>Novo Lead</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Primeiro nome:</label>
+          <label>Nome:</label>
           <input
             type="text"
             value={firstName}
@@ -77,9 +82,13 @@ export default function NewLead() {
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
-        <button type="submit">Enviar</button>
+        <button type="submit">Cadastrar</button>
       </form>
-      {feedback && <p>{feedback}</p>}
+      {statusMessage && (
+        <p style={{ color: status === "success" ? "green" : "red" }}>
+          {statusMessage}
+        </p>
+      )}
     </div>
   );
 }
