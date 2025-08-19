@@ -82,3 +82,9 @@ def notify_n8n(lead): #metodo exclusivo para enviar o webhook ao n8n, chamado em
 class LeadViewSet(viewsets.ModelViewSet):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
+
+@api_view(['GET'])
+def list_leads(request):
+    leads = Lead.objects.all().order_by('-created_at')
+    serializer = LeadSerializer(leads, many=True)
+    return Response(serializer.data)

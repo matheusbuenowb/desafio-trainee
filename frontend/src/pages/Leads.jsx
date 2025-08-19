@@ -1,38 +1,28 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 export default function Leads() {
+  const [leads, setLeads] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/leads/list/")
+      .then(res => res.json())
+      .then(data => setLeads(data))
+      .catch(err => console.error("Erro ao buscar leads:", err));
+  }, []);
+
   return (
     <div>
-      <h1>Leads</h1>
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Maria Silva</td>
-              <td>maria@email.com</td>
-              <td>Ativo</td>
-            </tr>
-            <tr>
-              <td>João Souza</td>
-              <td>joao@email.com</td>
-              <td>Inativo</td>
-            </tr>
-            <tr>
-              <td>Ana Costa</td>
-              <td>ana@email.com</td>
-              <td>Em negociação</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h2>Leads</h2>
+      {leads.length === 0 && <p>Nenhum lead cadastrado.</p>}
+      <ul>
+        {leads.map(lead => (
+          <li key={lead.id}>
+            {lead.first_name} {lead.last_name} - {lead.email}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
+
 
