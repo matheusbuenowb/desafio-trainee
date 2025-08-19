@@ -12,6 +12,9 @@ import json
 from rest_framework import viewsets
 from .models import Lead
 from .serializers import LeadSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 def lead_form(request):
     error = None
@@ -46,19 +49,16 @@ def lead_form(request):
 def success(request):
     return render(request, 'leads/success.html')
 
-@csrf_exempt  #endpoint
-@require_http_methods(["POST"])
+
+@api_view(['POST'])
 def create_lead(request):
-    print(request.body)
-    try:
-        data = json.loads(request.body)
-        lead = Lead.objects.create(
-            name=data.get("name"),
-            email=data.get("email")
-        )
-        return JsonResponse({"message": "Lead criado!", "id": lead.id})
-    except Exception as e:
-        return JsonResponse({"message": "Erro ao criar lead", "error": str(e)}, status=400)
+    print(request.data)  # log do que chega do frontend
+    serializer = LeadSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Lead criado!", "id": serializer.data['id']})
+    return Response({"message": "Erro ao criar lead", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LeadViewSet(viewsets.ModelViewSet):
     queryset = Lead.objects.all()
