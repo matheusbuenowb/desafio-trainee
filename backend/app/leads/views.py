@@ -9,6 +9,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import json
+from rest_framework import viewsets
+from .models import Lead
+from .serializers import LeadSerializer
 
 def lead_form(request):
     error = None
@@ -43,9 +46,10 @@ def lead_form(request):
 def success(request):
     return render(request, 'leads/success.html')
 
-@csrf_exempt
+@csrf_exempt  #endpoint
 @require_http_methods(["POST"])
 def create_lead(request):
+    print(request.body)
     try:
         data = json.loads(request.body)
         lead = Lead.objects.create(
@@ -55,3 +59,7 @@ def create_lead(request):
         return JsonResponse({"message": "Lead criado!", "id": lead.id})
     except Exception as e:
         return JsonResponse({"message": "Erro ao criar lead", "error": str(e)}, status=400)
+
+class LeadViewSet(viewsets.ModelViewSet):
+    queryset = Lead.objects.all()
+    serializer_class = LeadSerializer

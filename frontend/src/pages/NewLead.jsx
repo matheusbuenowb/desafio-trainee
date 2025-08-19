@@ -1,41 +1,74 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function NewLead() {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");  // substitui name
+  const [lastName, setLastName] = useState("");    // novo campo opcional
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");      // novo campo opcional
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Lead criado: ${name} - ${email}`);
-    setName("");
-    setEmail("");
+    try {
+      const response = await fetch("http://localhost:8080/api/leads/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          message: message,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Erro ao criar lead:", errorData);
+        return;
+      }
+
+      console.log("Lead criado com sucesso!");
+      // limpa campos
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setMessage("");
+    } catch (error) {
+      console.error("Erro:", error);
+    }
   };
 
   return (
     <div>
-      <h2>Novo Lead</h2>
+      <h2>Cadastro de Lead</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label><br/>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Digite o seu nome"
-          />
-        </div>
-        <div>
-          <label>Email:</label><br/>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Digite seu email"
-          />
-        </div>
-        <button type="submit">Salvar</button>
+        <input
+          type="text"
+          placeholder="Nome"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Sobrenome"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <textarea
+          placeholder="Mensagem"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button type="submit">Enviar</button>
       </form>
     </div>
   );
