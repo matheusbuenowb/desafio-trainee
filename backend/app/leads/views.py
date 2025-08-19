@@ -55,8 +55,8 @@ def create_lead(request):
     print(request.data)  # log do que chega do frontend
     serializer = LeadSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "Lead criado!", "id": serializer.data['id']})
+        lead = serializer.save() #aqui o objeto Lead é recém-criado
+        return Response({"message": "Lead criado!", "id": lead.id})
     return Response({"message": "Erro ao criar lead", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
