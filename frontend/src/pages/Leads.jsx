@@ -11,16 +11,31 @@ export default function Leads() {
   }, []);
 
   return (
-    <div>
+    <div className="leads-container">
       <h2>Leads</h2>
       {leads.length === 0 && <p>Nenhum lead cadastrado.</p>}
-      <ul>
-        {leads.map(lead => (
-          <li key={lead.id}>
-            {lead.first_name} {lead.last_name} - {lead.email}
-          </li>
-        ))}
-      </ul>
+      <table className="leads-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Mensagem</th>
+            <th>Status</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leads.map(lead => (
+            <tr key={lead.id}>
+              <td>{lead.first_name} {lead.last_name}</td>
+              <td>{lead.email}</td>
+              <td>{lead.message}</td>
+              <td>{lead.status}</td>
+              <td>{new Date(lead.created_at).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
