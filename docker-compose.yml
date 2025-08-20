@@ -46,6 +46,15 @@ services:
     depends_on:
       - challenge_db
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - challenge_web
+    tty: true
+
 volumes:
   db_data:
   n8n_data:

@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y build-essential libpq-dev && rm -rf /va
 #Instalando CURL
 RUN apt-get update && apt-get install -y curl
 
-
 # Criar diretório da aplicação
 WORKDIR /app
 
