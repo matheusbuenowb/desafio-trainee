@@ -1,0 +1,31 @@
+{% extends "leads/base.html" %}
+
+{% block content %}
+<div class="new-lead-container">
+  <h2>Novo Lead</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div>
+      <label>Nome:</label>
+      <input type="text" name="first_name" required>
+    </div>
+    <div>
+      <label>Sobrenome:</label>
+      <input type="text" name="last_name">
+    </div>
+    <div>
+      <label>Email:</label>
+      <input type="email" name="email" required>
+    </div>
+    <div>
+      <label>Mensagem:</label>
+      <textarea name="message"></textarea>
+    </div>
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  {% if status_message %}
+    <p style="color: {{ status_color }}">{{ status_message }}</p>
+  {% endif %}
+</div>
+{% endblock %}

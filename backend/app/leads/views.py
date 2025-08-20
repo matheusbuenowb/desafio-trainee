@@ -49,6 +49,7 @@ def lead_form(request):
 def success(request):
     return render(request, 'leads/success.html')
 
+############ REACT ##################
 
 @api_view(['POST'])  #metodo para lidar com as req POST do front react
 def create_lead(request):
@@ -61,7 +62,7 @@ def create_lead(request):
     return Response({"message": "Erro ao criar lead", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-def notify_n8n(lead): #metodo exclusivo para enviar o webhook ao n8n, chamado em create_lead
+def notify_n8n(lead): #metodo exclusivo para enviar o webhook ao n8n, chamado em create_lead, REACT
     n8n_webhook = os.getenv("N8N_WEBHOOK_URL")  # colocar no .env
     if n8n_webhook:
         payload = {
@@ -79,12 +80,66 @@ def notify_n8n(lead): #metodo exclusivo para enviar o webhook ao n8n, chamado em
             print("Erro ao enviar webhook para n8n:", e)
 
 
-class LeadViewSet(viewsets.ModelViewSet):
+class LeadViewSet(viewsets.ModelViewSet): #Serializer para REACT
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
 
-@api_view(['GET'])
+@api_view(['GET']) #listagem em leads para REACT
 def list_leads(request):
     leads = Lead.objects.all().order_by('-created_at')
     serializer = LeadSerializer(leads, many=True)
     return Response(serializer.data)
+
+################ DJANGO ############
+
+def leads_list(request):
+    leads = Lead.objects.all().order_by("-created_at")
+    return render(request, "leads/leads.html", {"leads": leads})
+
+'''def dashboard(request):
+    return render(request, "leads/dashboard.html")
+'''
+def new_lead_page(request):
+    return render(request, "leads/new_lead.html")
+
+
+def new_lead(request):
+    status_message = None
+    status_color = "red"
+
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        # salva no banco
+        lead = Lead.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            message=message
+        )
+
+        # dispara pro n8n (mesma lógica do fetch do React)
+        try:
+            requests.post("http://localhost:8080/api/leads/", json={
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "message": message,
+            })
+            status_message = "Lead criado com sucesso!"
+            status_color = "green"
+        except:
+            status_message = "Erro ao enviar lead para o n8n!"
+
+    return render(request, "new_lead.html", {
+        "status_message": status_message,
+        "status_color": status_color
+    })
+
+
+def leads(request):
+    leads = Lead.objects.all().order_by("-created_at")
+    return render(request, "leads.html", {"leads": leads})
