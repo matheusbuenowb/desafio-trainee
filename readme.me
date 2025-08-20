@@ -1,0 +1,89 @@
+# Desafio Trainee - CRM com Django, Postgres e n8n
+
+Este projeto é uma aplicação de CRM simples que permite cadastrar leads e enviar os dados para um workflow do n8n via webhook. Todo o projeto roda via Docker Compose, incluindo backend (Django), frontend (React), banco de dados PostgreSQL e n8n.
+
+---
+
+## Estrutura do Projeto
+
+├── backend/
+│ └── app/ # Código da aplicação Django
+├── frontend/ # Código da aplicação React
+  └── Dockerfile # Dockerfile do React
+  └── package.json # Dependências do React
+├── docker-compose.yml
+├── Dockerfile # Dockerfile do Django
+├── requirements.txt # Dependências Python
+├── .env.example # Exemplo de variáveis de ambiente
+└── n8n_workflow.json # Export do workflow do n8n
+
+---
+
+## Pré-requisitos
+
+- Docker >= 20
+- Docker Compose >= 2
+- Node.js e npm (somente se for rodar React localmente sem Docker)
+
+---
+
+## Variáveis de Ambiente
+
+Crie um arquivo `.env` baseado no `.env.example` e configure os valores:
+
+Configuração do Postgres
+POSTGRES_USER=usuario_aqui
+POSTGRES_PASSWORD=senha_aqui
+POSTGRES_DB=nome_do_banco_aqui
+POSTGRES_HOST=host_do_banco_aqui
+POSTGRES_PORT=5432
+
+Configuração do Django
+DJANGO_SECRET_KEY=chave_secreta_aqui
+DJANGO_DEBUG=True
+DJANGO_ALLOWED_HOSTS=*
+
+Webhook do n8n
+N8N_WEBHOOK_URL=url_do_webhook_aqui
+
+---
+
+## Subindo a aplicação
+
+Na raiz do projeto, execute:
+
+docker compose up --build
+
+Esse comando irá criar os containers:
+
+  - challenge_db (Postgres)
+  
+  - challenge_web (Django)
+  
+  - challenge_n8n (n8n)
+  
+  - frontend (React)
+
+Além disso, serão executados as migrations do Django e os serviços estarão ativos nas portas especificadas.
+
+A aplicação estará disponível nas seguintes portas:
+
+- Frontend React: http://localhost:3000
+
+- Backend Django: http://localhost:8080
+
+- n8n: http://localhost:5678
+
+Workflow do n8n:
+
+O fluxo do n8n está exportado no arquivo n8n_workflow.json, aqui na raiz do depositório. Ele recebe dados do webhook do Django e responde HTTP 200 com { "ok": true } quando válido (é possível ver pelos logs no prompt de comando, ex: challenge_web  | [20/Aug/2025 20:19:18] "POST /api/leads/ HTTP/1.1" 200 34).
+
+
+Principal link para a aplicação:
+- Cadastro de leads: http://localhost:3000/new-lead
+
+Para ver lista de leads: http://localhost:3000/leads
+
+Dashboard: http://localhost:3000/dashboard
+
+O frontend consome a API do Django diretamente (porta 8080 dentro do Docker).
