@@ -11,4 +11,5 @@ urlpatterns = [
     path("leads/", views.leads_list, name="leads"),
     #path("dashboard/", views.dashboard, name="dashboard"),
     path("new-lead/", views.new_lead_page, name="new_lead"),
+    path('api/leads/<int:pk>/', views.delete_lead, name='delete_lead'), #rota para deletar em lista de leads
 ]

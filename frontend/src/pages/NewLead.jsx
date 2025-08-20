@@ -75,7 +75,7 @@ export default function NewLead() {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Mensagem:</label>
           <textarea
             value={message}

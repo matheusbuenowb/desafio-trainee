@@ -33,6 +33,7 @@
 }
 
 table {
+  margin-top: 30px;
   width: 100%;
   border-collapse: collapse;
 }
@@ -47,9 +48,11 @@ th, td {
   border-bottom: 1px solid #ddd;
 }
 
-/* Formulário Novo Lead */
+/*Formulário do New Lead*/
 form {
   background-color: white;
+  margin-top: 25px;
+  margin-bottom: 25px;
   padding: 25px;
   border-radius: 8px;
   max-width: 500px;
@@ -61,6 +64,7 @@ form div {
 }
 
 input[type="text"], input[type="email"] {
+  margin-top: 10px;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -79,5 +83,36 @@ button {
 }
 
 button:hover {
-  background-color: #2563eb;
+  background-color: #010306;
+  animation-delay: 2000ms;
+  transition: 300ms;
+}
+
+/*DIV da mensagem*/
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group textarea {
+  margin-top: 10px;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: vertical; /* só permite redimensionar verticalmente */
+  min-height: 100px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group textarea:focus {
+  border-color: #000000;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+  outline: none;
 }

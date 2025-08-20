@@ -90,6 +90,15 @@ def list_leads(request):
     serializer = LeadSerializer(leads, many=True)
     return Response(serializer.data)
 
+@api_view(['DELETE']) #delete para a listagem
+def delete_lead(request, pk):
+    try:
+        lead = Lead.objects.get(pk=pk)
+        lead.delete()
+        return Response({"message": "Lead deletado com sucesso!"})
+    except Lead.DoesNotExist:
+        return Response({"message": "Lead não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
 ################ DJANGO ############
 
 def leads_list(request):
