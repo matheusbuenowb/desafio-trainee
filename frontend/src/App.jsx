@@ -14,7 +14,7 @@ function App() {
       <div className="app-container">
         {/* Sidebar */}
         <aside className="sidebar">
-          <h1 className="logo">CRM</h1>
+          <h1 className="logo">Sistema de Leads</h1>
           <nav>
             <ul>
               <li><Link to="/dashboard">Dashboard</Link></li>

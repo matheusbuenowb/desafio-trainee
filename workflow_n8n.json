@@ -1,0 +1,33 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5bdf0cb6-6969-4bea-b27b-f8ad50f4db6d",
+      "name": "Webhook",
+      "webhookId": "43ef989b-5d3b-4fda-81ff-61c4f29ef4b6"
+    }
+  ],
+  "pinData": {},
+  "connections": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d22ac606-6bf9-4cb0-8e39-7185b2fb3fe1",
+  "meta": {
+    "instanceId": "693cef3e3e9d90719a9903378e152a4218d35f05708ed2e55f1c5df7dd71b5df"
+  },
+  "id": "zIWipf88wTaaa9XU",
+  "tags": []
+}

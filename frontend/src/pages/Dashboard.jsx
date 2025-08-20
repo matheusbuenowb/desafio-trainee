@@ -1,4 +1,7 @@
+/* Autor do código: Matheus Bueno Faria */
+
 import React, { useState, useEffect } from "react";
+
 
 const Dashboard = () => {
   const [leads, setLeads] = useState([]);
@@ -15,37 +18,32 @@ const Dashboard = () => {
         console.error("Erro ao carregar leads:", err);
         setLoading(false);
       });
+
   }, []);
 
   if (loading) return <p>Carregando leads...</p>;
 
   const totalLeads = leads.length;
-  const totalNewLeads = leads.filter((lead) => lead.status === "new").length;
   const recentLeads = [...leads]
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-    .slice(0, 5); // os 5 mais recentes
+    .slice(0, 5);
 
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
       <div className="stats">
-        <div className="stat">
+        <div className="stat-card">
           <h2>Total de Leads</h2>
           <p>{totalLeads}</p>
-        </div>
-        <div className="stat">
-          <h2>Leads Novos</h2>
-          <p>{totalNewLeads}</p>
         </div>
       </div>
 
       <div className="recent-leads">
-        <h2>Leads Mais Recentes</h2>
+        <h2>Leads mais recentes</h2>
         <ul>
           {recentLeads.map((lead) => (
             <li key={lead.id}>
-              {lead.first_name} {lead.last_name} - {lead.email} - {lead.status} -{" "}
-              {new Date(lead.created_at).toLocaleString()}
+              {lead.first_name} {lead.last_name} 
             </li>
           ))}
         </ul>

@@ -1,4 +1,4 @@
-# Dockerfile para React
+#Dockerfile exclusivo para o React rodar
 FROM node:20-alpine
 WORKDIR /app
 COPY package.json package-lock.json ./
