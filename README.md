@@ -2,6 +2,8 @@
 
 Este projeto é uma aplicação de CRM simples que permite cadastrar leads e enviar os dados para um workflow do n8n via webhook. Todo o projeto roda via Docker Compose, incluindo backend (Django), frontend (React), banco de dados PostgreSQL e n8n.
 
+Demonstração desta integração: https://www.youtube.com/watch?v=GbZ-KWsR9J0 
+
 # Observação sobre o Frontend
 
 No enunciado, a especificação pedia que o frontend fosse implementado em Django templates. Para poupar tempo de desenvolvimento e manter uma melhor separação de responsabilidades, optei por utilizar React no frontend, com intuito de garantir um maior desacoplamento de serviços, e visando assim uma arquitetura mais próxima possível da de microsserviços.
@@ -96,4 +98,5 @@ Principal link para a aplicação:
 - Dashboard: http://localhost:3000/dashboard
 
 O frontend consome a API do Django diretamente (porta 8080 dentro do Docker).
+
 
